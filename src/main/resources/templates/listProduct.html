@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechGear Hub - Shipping Interface</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50">
+<header class="bg-gradient-to-r from-blue-400 to-purple-400 shadow-lg fixed w-full z-50 transition-all duration-300">
+    <nav class="container mx-auto px-4 py-4">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center space-x-8">
+                <img src="https://res.cloudinary.com/dhp7ylyvh/image/upload/v1732268080/z91of98oxvini0h09gfq.png" alt="TechGear Logo" class="h-8 w-auto hover:rotate-12 transition-all duration-300">
+                <div class="hidden md:flex space-x-6">
+                    <a href="home.html" class="text-gray-800 font-semibold text-lg hover:text-blue-600 transition-all duration-300 hover:scale-110">Home</a>
+                    <a href="listProduct.html" class="text-gray-800 font-semibold text-lg hover:text-blue-600 transition-all duration-300 hover:scale-110">Products</a>
+                    <a href="contact.html" class="text-gray-800 font-semibold text-lg hover:text-blue-600 transition-all duration-300 hover:scale-110">Contact</a>
+                </div>
+            </div>
+            <div class="flex items-center space-x-4">
+                <button id="search" class="p-2 hover:bg-gray-100 rounded-full transition-all duration-300 hover:rotate-12" onclick="window.location.href='search.html'">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                </button>
+                <button id="cart" class="p-2 hover:bg-gray-100 rounded-full transition-all duration-300 hover:rotate-12" onclick="window.location.href='cart.html'">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </nav>
+</header>
+
+
+
+<div class="flex min-h-screen pt-16">
+    <!-- Sidebar Navigation -->
+    <aside class="w-1/4 bg-white shadow-lg p-6 space-y-4">
+        <h2 class="text-xl font-bold text-gray-800 mb-6">Categories</h2>
+        <div class="space-y-2">
+            <button class="w-full text-left px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition-all duration-300">All Products</button>
+            <button class="w-full text-left px-4 py-2 rounded-lg text-gray-700 hover:bg-blue-600 hover:text-white transition-all duration-300">Laptops</button>
+            <button class="w-full text-left px-4 py-2 rounded-lg text-gray-700 hover:bg-blue-600 hover:text-white transition-all duration-300">Smartphones</button>
+            <button class="w-full text-left px-4 py-2 rounded-lg text-gray-700 hover:bg-blue-600 hover:text-white transition-all duration-300">Tablets</button>
+            <button class="w-full text-left px-4 py-2 rounded-lg text-gray-700 hover:bg-blue-600 hover:text-white transition-all duration-300">Accessories</button>
+            <button class="w-full text-left px-4 py-2 rounded-lg text-gray-700 hover:bg-blue-600 hover:text-white transition-all duration-300">Other</button>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="w-3/4 p-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Product Card 1 -->
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden transition-all duration-500 transform hover:scale-105 hover:shadow-2xl">
+                <img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9" alt="Latest Smartphone" class="w-full h-48 object-cover hover:opacity-80 transition-all duration-300">
+                <div class="p-6">
+                    <h3 class="text-xl font-semibold mb-2">Premium Smartphone</h3>
+                    <p class="text-gray-600 mb-2">$999.99</p>
+                    <p class="text-sm text-gray-500 mb-4">Free Shipping</p>
+                    <button class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-all duration-300">Add to Cart</button>
+                </div>
+            </div>
+
+            <!-- Product Card 2 -->
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden transition-all duration-500 transform hover:scale-105 hover:shadow-2xl">
+                <img src="https://images.unsplash.com/photo-1496181133206-80ce9b88a853" alt="Latest Laptop" class="w-full h-48 object-cover hover:opacity-80 transition-all duration-300">
+                <div class="p-6">
+                    <h3 class="text-xl font-semibold mb-2">Ultra Laptop</h3>
+                    <p class="text-gray-600 mb-2">$1499.99</p>
+                    <p class="text-sm text-gray-500 mb-4">Free Shipping</p>
+                    <button class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-all duration-300">Add to Cart</button>
+                </div>
+            </div>
+
+            <!-- Product Card 3 -->
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden transition-all duration-500 transform hover:scale-105 hover:shadow-2xl">
+                <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e" alt="Wireless Headphones" class="w-full h-48 object-cover hover:opacity-80 transition-all duration-300">
+                <div class="p-6">
+                    <h3 class="text-xl font-semibold mb-2">Pro Headphones</h3>
+                    <p class="text-gray-600 mb-2">$299.99</p>
+                    <p class="text-sm text-gray-500 mb-4">Free Shipping</p>
+                    <button class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-all duration-300">Add to Cart</button>
+                </div>
+            </div>
+
+            <!-- Product Card 4 -->
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden transition-all duration-500 transform hover:scale-105 hover:shadow-2xl">
+                <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30" alt="Smart Watch" class="w-full h-48 object-cover hover:opacity-80 transition-all duration-300">
+                <div class="p-6">
+                    <h3 class="text-xl font-semibold mb-2">Smart Watch</h3>
+                    <p class="text-gray-600 mb-2">$199.99</p>
+                    <p class="text-sm text-gray-500 mb-4">Free Shipping</p>
+                    <button class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-all duration-300">Add to Cart</button>
+                </div>
+            </div>
+
+            <!-- Product Card 5 -->
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden transition-all duration-500 transform hover:scale-105 hover:shadow-2xl">
+                <img src="https://images.unsplash.com/photo-1546868871-7041f2a55e12" alt="Tablet" class="w-full h-48 object-cover hover:opacity-80 transition-all duration-300">
+                <div class="p-6">
+                    <h3 class="text-xl font-semibold mb-2">Pro Tablet</h3>
+                    <p class="text-gray-600 mb-2">$649.99</p>
+                    <p class="text-sm text-gray-500 mb-4">Free Shipping</p>
+                    <button class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-all duration-300">Add to Cart</button>
+                </div>
+            </div>
+
+            <!-- Product Card 6 -->
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden transition-all duration-500 transform hover:scale-105 hover:shadow-2xl">
+                <img src="https://images.unsplash.com/photo-1625772452859-1c03d5bf1137" alt="Wireless Earbuds" class="w-full h-48 object-cover hover:opacity-80 transition-all duration-300">
+                <div class="p-6">
+                    <h3 class="text-xl font-semibold mb-2">Wireless Earbuds</h3>
+                    <p class="text-gray-600 mb-2">$159.99</p>
+                    <p class="text-sm text-gray-500 mb-4">Free Shipping</p>
+                    <button class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-all duration-300">Add to Cart</button>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+</body>
+</html>
