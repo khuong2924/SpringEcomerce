@@ -17,9 +17,11 @@
                 <div class="hidden md:flex space-x-6">
                     <a href="home.html" class="text-gray-800 font-semibold text-lg hover:text-blue-600 transition-all duration-300 hover:scale-110">Home</a>
                     <a href="listProduct.html" class="text-gray-800 font-semibold text-lg hover:text-blue-600 transition-all duration-300 hover:scale-110">Products</a>
-                    <a href="contact.html" class="text-gray-800 font-semibold text-lg hover:text-blue-600 transition-all duration-300 hover:scale-110">Contact</a>
+<!--                    <a href="contact.html" class="text-gray-800 font-semibold text-lg hover:text-blue-600 transition-all duration-300 hover:scale-110">Contact</a>-->
                 </div>
             </div>
+
+            <!-- Phần trạng thái người dùng và nút Login/Logout -->
             <div class="flex items-center space-x-4">
                 <button id="search" class="p-2 hover:bg-gray-100 rounded-full transition-all duration-300 hover:rotate-12" onclick="window.location.href='search.html'">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -31,6 +33,22 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
                     </svg>
                 </button>
+
+                <!-- Phần hiển thị trạng thái người dùng -->
+                <div id="user-status" class="flex items-center space-x-4">
+                    <!-- Nút Login nếu chưa đăng nhập -->
+                    <button id="login-btn" class="px-4 py-2 bg-transparent text-white rounded-md hover:bg-pink-500" onclick="login()">
+                        Login
+                    </button>
+
+                    <!-- Nút Logout nếu đã đăng nhập -->
+                    <button id="logout-btn" class="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 hidden" onclick="logout()">
+                        Logout
+                    </button>
+
+                    <!-- Hiển thị tên người dùng khi đăng nhập -->
+                    <span id="user-name" class="text-white font-semibold hidden">Hello, <span></span></span>
+                </div>
             </div>
         </div>
     </nav>
@@ -123,4 +141,35 @@
     </div>
 </div>
 </body>
+<script>
+    function checkLoginStatus() {
+        const isLoggedIn = sessionStorage.getItem('userLoggedIn');
+        const userName = sessionStorage.getItem('userName');
+
+        const loginBtn = document.getElementById('login-btn');
+        const logoutBtn = document.getElementById('logout-btn');
+        const userNameElement = document.getElementById('user-name');
+
+        if (isLoggedIn === 'true') {
+            loginBtn.classList.add('hidden');
+            logoutBtn.classList.remove('hidden');
+            userNameElement.classList.remove('hidden');
+            userNameElement.querySelector('span').innerText = userName || "User";
+        } else {
+            loginBtn.classList.remove('hidden');
+            logoutBtn.classList.add('hidden');
+            userNameElement.classList.add('hidden');
+        }
+    }
+    function login() {
+        window.location.href = 'login.html';
+    }
+    function logout() {
+        sessionStorage.removeItem('userLoggedIn');
+        sessionStorage.removeItem('userName');
+        checkLoginStatus();
+    }
+    window.onload = checkLoginStatus;
+</script>
+
 </html>

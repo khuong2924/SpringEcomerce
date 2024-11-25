@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,22 +13,41 @@
             <div class="flex items-center space-x-8">
                 <img src="https://res.cloudinary.com/dhp7ylyvh/image/upload/v1732268080/z91of98oxvini0h09gfq.png" alt="TechGear Logo" class="h-8 w-auto hover:rotate-12 transition-all duration-300">
                 <div class="hidden md:flex space-x-6">
-                    <a href="home.html" class="text-gray-800 font-semibold text-lg hover:text-blue-600 transition-all duration-300 hover:scale-110">Home</a>
-                    <a href="listProduct.html" class="text-gray-800 font-semibold text-lg hover:text-blue-600 transition-all duration-300 hover:scale-110">Products</a>
+                    <a href="/home" class="text-gray-800 font-semibold text-lg hover:text-blue-600 transition-all duration-300 hover:scale-110">Home</a>
+                    <a href="/listProduct" class="text-gray-800 font-semibold text-lg hover:text-blue-600 transition-all duration-300 hover:scale-110">Products</a>
                     <a href="contact.html" class="text-gray-800 font-semibold text-lg hover:text-blue-600 transition-all duration-300 hover:scale-110">Contact</a>
                 </div>
             </div>
+
+            <!-- Phần trạng thái người dùng và nút Login/Logout -->
             <div class="flex items-center space-x-4">
-                <button id="search" class="p-2 hover:bg-gray-100 rounded-full transition-all duration-300 hover:rotate-12" onclick="window.location.href='search.html'">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                    </svg>
-                </button>
-                <button id="cart" class="p-2 hover:bg-gray-100 rounded-full transition-all duration-300 hover:rotate-12" onclick="window.location.href='cart.html'">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-                    </svg>
-                </button>
+                                <button id="search" class="p-2 hover:bg-gray-100 rounded-full transition-all duration-300 hover:rotate-12" onclick="window.location.href='search.html'">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                                    </svg>
+                                </button>
+                                <button id="cart" class="p-2 hover:bg-gray-100 rounded-full transition-all duration-300 hover:rotate-12" onclick="window.location.href='cart.html'">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                                    </svg>
+                                </button>
+
+                <div id="user-status" class="p-2 hover:bg-gray-100 rounded-full transition-all duration-300 ">
+                    <!--                    <div sec:authorize="isAuthenticated()">-->
+                    <!--                        <form action="#" th:action="@{/logout}" method="post">-->
+                    <!--                            <button type="submit" id="logout-btn" class="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700">-->
+                    <!--                                Logout-->
+                    <!--                            </button>-->
+                    <!--                        </form>-->
+                    <!--                        <span id="user-name" class="text-white font-semibold">Hello, <span th:text="${#authentication.name}"></span></span>-->
+                    <!--                    </div>-->
+
+                    <div sec:authorize="isAnonymous()">
+                        <button id="login-btn" class="px-4 py-2 bg-transparent text-white rounded-md " onclick="window.location.href='/login'">
+                            Login
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     </nav>
@@ -36,90 +55,196 @@
 
 
 
-<div class="flex min-h-screen pt-16">
-    <!-- Sidebar Navigation -->
-    <aside class="w-1/4 bg-white shadow-lg p-6 space-y-4">
+<div class="flex min-h-screen pt-20">
+    <aside class="w-1/4 bg-slate-50 shadow-lg p-6 space-y-4">
         <h2 class="text-xl font-bold text-gray-800 mb-6">Categories</h2>
         <div class="space-y-2">
-            <button class="w-full text-left px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition-all duration-300">All Products</button>
-            <button class="w-full text-left px-4 py-2 rounded-lg text-gray-700 hover:bg-blue-600 hover:text-white transition-all duration-300">Laptops</button>
-            <button class="w-full text-left px-4 py-2 rounded-lg text-gray-700 hover:bg-blue-600 hover:text-white transition-all duration-300">Smartphones</button>
-            <button class="w-full text-left px-4 py-2 rounded-lg text-gray-700 hover:bg-blue-600 hover:text-white transition-all duration-300">Tablets</button>
-            <button class="w-full text-left px-4 py-2 rounded-lg text-gray-700 hover:bg-blue-600 hover:text-white transition-all duration-300">Accessories</button>
-            <button class="w-full text-left px-4 py-2 rounded-lg text-gray-700 hover:bg-blue-600 hover:text-white transition-all duration-300">Other</button>
+            <button class="w-full text-left px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition-all duration-300" onclick="filterProducts('all')">All Products</button>
+            <button class="w-full text-left px-4 py-2 rounded-lg text-gray-700 hover:bg-blue-600 hover:text-white transition-all duration-300" onclick="filterProducts('Laptops')">Laptops</button>
+            <button class="w-full text-left px-4 py-2 rounded-lg text-gray-700 hover:bg-blue-600 hover:text-white transition-all duration-300" onclick="filterProducts('Smartphones')">Smartphones</button>
+            <button class="w-full text-left px-4 py-2 rounded-lg text-gray-700 hover:bg-blue-600 hover:text-white transition-all duration-300" onclick="filterProducts('Tablets')">Tablets</button>
+            <button class="w-full text-left px-4 py-2 rounded-lg text-gray-700 hover:bg-blue-600 hover:text-white transition-all duration-300" onclick="filterProducts('Accessories')">Accessories</button>
+            <button class="w-full text-left px-4 py-2 rounded-lg text-gray-700 hover:bg-blue-600 hover:text-white transition-all duration-300" onclick="filterProducts('Others')">Other</button>
         </div>
     </aside>
 
-    <!-- Main Content -->
-    <main class="w-3/4 p-6">
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <!-- Product Card 1 -->
-            <div class="bg-white rounded-xl shadow-lg overflow-hidden transition-all duration-500 transform hover:scale-105 hover:shadow-2xl">
-                <img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9" alt="Latest Smartphone" class="w-full h-48 object-cover hover:opacity-80 transition-all duration-300">
+    <main class="w-3/4 p-6 ">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6  ">
+            <div th:each="product : ${products}" class="bg-white rounded-xl shadow-lg overflow-hidden transition-all duration-500 transform hover:scale-105 hover:shadow-2xl"
+                 th:data-category="${product.category.name}">
+                <img th:src="${product.imageProduct}" alt="Product Image" class="w-full h-48 object-cover hover:opacity-80 transition-all duration-300">
+
                 <div class="p-6">
-                    <h3 class="text-xl font-semibold mb-2">Premium Smartphone</h3>
-                    <p class="text-gray-600 mb-2">$999.99</p>
-                    <p class="text-sm text-gray-500 mb-4">Free Shipping</p>
-                    <button class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-all duration-300">Add to Cart</button>
+                    <h3 th:text="${product.name}" class="text-xl font-semibold mb-2"></h3>
+                    <p th:text="'$' + ${product.price}" class="text-gray-600 mb-2"></p>
+                    <p th:text="'$' + ${product.description}" class="text-sm text-gray-500 mb-4"></p>
+
+<!--                    <button th:id="'viewButton-'+ ${product.id}" class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-all duration-300">View Detail</button>-->
+<!--                    <button class=" w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-all duration-300">Add to Cart</button>-->
+                    <div class="flex space-x-4">
+                        <!-- View Detail Button -->
+                        <button th:id="'viewButton-'+ ${product.id}"
+                                class="w-1/2 bg-blue-600 text-white py-2 px-6 rounded-lg shadow-md hover:bg-blue-700 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-blue-300 transition-all duration-300 flex items-center justify-center">
+                                <path d="M10 19l5-5-5-5m7 5H3"></path>
+                            </svg>
+                            View Detail
+                        </button>
+
+                        <!-- Add to Cart Button -->
+                        <button class="w-1/2 bg-green-600 text-white py-2 px-6 rounded-lg shadow-md hover:bg-green-700 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-green-300 transition-all duration-300 flex items-center justify-center">
+                                <path d="M6 2v5h12V2m0 5l-3 3M6 2h12m-3 3h-6"></path>
+                            </svg>
+                            Add to Cart
+                        </button>
+                    </div>
+
                 </div>
+
+                <div th:id="'ViewDetailModal-' + ${product.id}" class="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-75 transition-opacity hidden ">
+                    <div class="bg-white w-3/4 h-3/4 max-w-4xl rounded-lg shadow-lg overflow-hidden relative">`
+                        <div class="relative">
+                            <!-- Nút đóng -->
+                            <button id="closeButton" class="absolute top-4 right-4 text-gray-500 hover:text-gray-700">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                                <span class="sr-only">Đóng</span>
+                            </button>
+
+                        </div>
+                        <div class="md:flex">
+                            <!-- Product Image -->
+                            <div class="md:w-1/2">
+                                <img id="productImage" th:src="${product.imageProduct}" alt="Hình ảnh sản phẩm" class="w-full h-auto object-cover">
+                            </div>
+                            <!-- Product Details -->
+                            <div class="md:w-1/2 p-6">
+                                <h1 id="productName" class="text-3xl font-bold mb-4"></h1>
+                                <p id="productId" class="text-sm text-gray-600 mb-2"></p>
+                                <p id="productCategory" class="text-sm text-gray-600 mb-4"></p>
+                                <div class="flex items-center mb-4">
+                                    <span class="text-2xl font-bold text-indigo-600" id="productPrice"></span>
+                                    <span class="ml-2 text-sm text-gray-500" th:text="${product.price} + ' VND'"></span>
+                                </div>
+                                <div class="mb-4">
+                                    <span class="font-semibold" th:text="${product.brand}" >Thương hiệu:</span>
+                                    <span id="productBrand" class="ml-2"></span>
+                                </div>
+                                <div class="mb-4">
+                                    <span class="font-semibold" th:text="${product.color}" >Màu sắc:</span>
+                                    <span id="productColor" class="ml-2"></span>
+                                </div>
+                                <div class="mb-4">
+                                    <span class="font-semibold" th:text="${product.weight}" >Trọng lượng:</span>
+                                    <span id="productWeight" class="ml-2"></span>
+                                    <span class="ml-1">kg</span>
+                                </div>
+                                <div class="mb-6">
+                                    <h2 class="font-semibold mb-2" th:text="${product.description}" >Mô tả sản phẩm:</h2>
+                                    <p id="productDescription" class="text-gray-700"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
 
-            <!-- Product Card 2 -->
-            <div class="bg-white rounded-xl shadow-lg overflow-hidden transition-all duration-500 transform hover:scale-105 hover:shadow-2xl">
-                <img src="https://images.unsplash.com/photo-1496181133206-80ce9b88a853" alt="Latest Laptop" class="w-full h-48 object-cover hover:opacity-80 transition-all duration-300">
-                <div class="p-6">
-                    <h3 class="text-xl font-semibold mb-2">Ultra Laptop</h3>
-                    <p class="text-gray-600 mb-2">$1499.99</p>
-                    <p class="text-sm text-gray-500 mb-4">Free Shipping</p>
-                    <button class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-all duration-300">Add to Cart</button>
-                </div>
-            </div>
-
-            <!-- Product Card 3 -->
-            <div class="bg-white rounded-xl shadow-lg overflow-hidden transition-all duration-500 transform hover:scale-105 hover:shadow-2xl">
-                <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e" alt="Wireless Headphones" class="w-full h-48 object-cover hover:opacity-80 transition-all duration-300">
-                <div class="p-6">
-                    <h3 class="text-xl font-semibold mb-2">Pro Headphones</h3>
-                    <p class="text-gray-600 mb-2">$299.99</p>
-                    <p class="text-sm text-gray-500 mb-4">Free Shipping</p>
-                    <button class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-all duration-300">Add to Cart</button>
-                </div>
-            </div>
-
-            <!-- Product Card 4 -->
-            <div class="bg-white rounded-xl shadow-lg overflow-hidden transition-all duration-500 transform hover:scale-105 hover:shadow-2xl">
-                <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30" alt="Smart Watch" class="w-full h-48 object-cover hover:opacity-80 transition-all duration-300">
-                <div class="p-6">
-                    <h3 class="text-xl font-semibold mb-2">Smart Watch</h3>
-                    <p class="text-gray-600 mb-2">$199.99</p>
-                    <p class="text-sm text-gray-500 mb-4">Free Shipping</p>
-                    <button class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-all duration-300">Add to Cart</button>
-                </div>
-            </div>
-
-            <!-- Product Card 5 -->
-            <div class="bg-white rounded-xl shadow-lg overflow-hidden transition-all duration-500 transform hover:scale-105 hover:shadow-2xl">
-                <img src="https://images.unsplash.com/photo-1546868871-7041f2a55e12" alt="Tablet" class="w-full h-48 object-cover hover:opacity-80 transition-all duration-300">
-                <div class="p-6">
-                    <h3 class="text-xl font-semibold mb-2">Pro Tablet</h3>
-                    <p class="text-gray-600 mb-2">$649.99</p>
-                    <p class="text-sm text-gray-500 mb-4">Free Shipping</p>
-                    <button class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-all duration-300">Add to Cart</button>
-                </div>
-            </div>
-
-            <!-- Product Card 6 -->
-            <div class="bg-white rounded-xl shadow-lg overflow-hidden transition-all duration-500 transform hover:scale-105 hover:shadow-2xl">
-                <img src="https://images.unsplash.com/photo-1625772452859-1c03d5bf1137" alt="Wireless Earbuds" class="w-full h-48 object-cover hover:opacity-80 transition-all duration-300">
-                <div class="p-6">
-                    <h3 class="text-xl font-semibold mb-2">Wireless Earbuds</h3>
-                    <p class="text-gray-600 mb-2">$159.99</p>
-                    <p class="text-sm text-gray-500 mb-4">Free Shipping</p>
-                    <button class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-all duration-300">Add to Cart</button>
-                </div>
-            </div>
         </div>
     </main>
+
+<!--    Modal View Detail-->
+
+
+
 </div>
 </body>
+
+<script>
+    function checkLoginStatus() {
+        const isLoggedIn = sessionStorage.getItem('userLoggedIn');
+        const userName = sessionStorage.getItem('userName');
+
+        const loginBtn = document.getElementById('login-btn');
+        const logoutBtn = document.getElementById('logout-btn');
+        const userNameElement = document.getElementById('user-name');
+
+        if (isLoggedIn === 'true') {
+            loginBtn.classList.add('hidden');
+            logoutBtn.classList.remove('hidden');
+            userNameElement.classList.remove('hidden');
+            userNameElement.querySelector('span').innerText = userName || "User";
+        } else {
+            loginBtn.classList.remove('hidden');
+            logoutBtn.classList.add('hidden');
+            userNameElement.classList.add('hidden');
+        }
+    }
+    window.onload = checkLoginStatus;
+
+
+    function filterProducts(category) {
+        const allProducts = document.querySelectorAll('.bg-white'); // Lấy tất cả các sản phẩm
+        allProducts.forEach(product => {
+            // Kiểm tra nếu sản phẩm thuộc danh mục đang lọc
+            const productCategory = product.dataset.category;
+
+            if (category === 'all' || productCategory === category) {
+                product.style.display = 'block'; // Hiển thị sản phẩm
+            } else {
+                product.style.display = 'none'; // Ẩn sản phẩm
+            }
+        });
+    }
+
+    document.getElementById('closeButton').addEventListener('click', function() {
+        console.log('Modal closed');
+    });
+
+
+    // document.querySelectorAll('button[id^="viewButton-"]').forEach((button) => {
+    //     button.addEventListener('click', () => {
+    //         const productId = button.id.split('-')[1];
+    //         const modal = document.getElementById(`ViewDetailModal-${productId}`);
+    //         if (!modal) {
+    //             console.error(`Modal not found for productId: ${productId}`);
+    //             return;
+    //         }
+    //
+    //         modal.classList.remove('hidden'); // Hiển thị modal
+    //         setTimeout(() => {
+    //             modal.classList.remove('opacity-0', 'scale-95'); // Bật hiệu ứng
+    //         }, 10);
+    //     });
+    // });
+
+    document.querySelectorAll('button[id^="viewButton-"]').forEach((button) => {
+        button.addEventListener('click', () => {
+            const productId = button.id.split('-')[1];
+            const modal = document.getElementById(`ViewDetailModal-${productId}`);
+
+            if (modal) {
+                modal.classList.remove('hidden'); // Hiển thị modal
+                setTimeout(() => {
+                    modal.classList.add('opacity-100', 'scale-100'); // Hiệu ứng fade-in
+                }, 10);
+            }
+        });
+    });
+
+    document.querySelectorAll('#closeButton').forEach((button) => {
+        button.addEventListener('click', () => {
+            const modal = button.closest('.fixed'); // Tìm modal liên quan
+            modal.classList.remove('opacity-100', 'scale-100'); // Hiệu ứng fade-out
+            setTimeout(() => {
+                modal.classList.add('hidden'); // Ẩn modal sau khi hiệu ứng kết thúc
+            }, 300);
+        });
+    });
+
+
+
+
+
+</script>
 </html>

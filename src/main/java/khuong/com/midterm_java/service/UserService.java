@@ -5,6 +5,10 @@ import khuong.com.midterm_java.entity.User;
 import khuong.com.midterm_java.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -18,6 +22,8 @@ public class UserService {
     @Autowired
     private final UserRepository userRepository;
 
+
+
     public UserDTO mapToDto(User user) {
         UserDTO userDTO = new UserDTO();
         userDTO.setId(user.getId());
@@ -26,6 +32,7 @@ public class UserService {
         userDTO.setEmail(user.getEmail());
         return userDTO;
     }
+
     public List<UserDTO> getAll() {
         List<User> users = userRepository.findAll();
         List<UserDTO> userDTOs = new ArrayList<>();
@@ -37,7 +44,7 @@ public class UserService {
 
     public UserDTO getByEmail(String email) {
         Optional<User> userOptional = userRepository.findByEmail(email);
-        return userOptional.map(this::mapToDto).orElse(null);  // Nếu không tìm thấy, trả về null
+        return userOptional.map(this::mapToDto).orElse(null);
     }
 
     public void create(UserDTO userDTO) {
@@ -45,6 +52,7 @@ public class UserService {
         user.setFirstName(userDTO.getFirstName());
         user.setLastName(userDTO.getLastName());
         user.setEmail(userDTO.getEmail());
+        // Mã hóa mật khẩu trước khi lưu
         user.setPassword(userDTO.getPassword());
         userRepository.save(user);
     }
@@ -70,4 +78,6 @@ public class UserService {
         Optional<User> user = userRepository.findByEmail(username);
         return user.isPresent() && user.get().getPassword().equals(password);
     }
+
+
 }

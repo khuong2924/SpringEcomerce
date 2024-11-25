@@ -1,10 +1,14 @@
 package khuong.com.midterm_java.controller;
 
 import khuong.com.midterm_java.dto.UserDTO;
+import khuong.com.midterm_java.entity.User;
 import khuong.com.midterm_java.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -48,4 +52,6 @@ public class UserController {
         userService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
+
 }
