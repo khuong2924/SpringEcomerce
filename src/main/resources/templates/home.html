@@ -29,11 +29,17 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                     </svg>
                 </button>
-                <button id="cart" class="p-2 hover:bg-gray-100 rounded-full transition-all duration-300 hover:rotate-12" action="/cart">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-                    </svg>
-                </button>
+
+
+                    <form action="/cart" method="get">
+                        <button id="cart" type="submit" class="p-2 hover:bg-gray-100 rounded-full transition-all duration-300 hover:rotate-12">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                            </svg>
+                        </button>
+                    </form>
+
+
 
                 <div id="user-status" class="p-2 hover:bg-gray-100 rounded-full transition-all duration-300 ">
 <!--                    <div sec:authorize="isAuthenticated()">-->
@@ -46,10 +52,13 @@
 <!--                    </div>-->
 
                     <div sec:authorize="isAnonymous()">
-                        <button id="login-btn" class="px-4 py-2 bg-transparent text-white rounded-md " onclick="window.location.href='/login'">
-                            Login
-                        </button>
+                        <form action="/login" method="get">
+                            <button id="login-btn" type="submit" class="px-4 py-2 bg-transparent text-white rounded-md">
+                                Login
+                            </button>
+                        </form>
                     </div>
+
                 </div>
             </div>
         </div>
@@ -66,11 +75,14 @@
                 <div class="text-white max-w-2xl animate-fade-in-up">
                     <h1 class="text-5xl font-bold mb-6 animate-pulse">Discover the Latest Electronics</h1>
                     <p class="text-xl mb-8">Experience cutting-edge technology with our premium selection of devices</p>
-                    <button
-                            class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-full text-lg font-semibold transition-all duration-300 transform hover:scale-110 hover:shadow-xl"
-                            onclick="window.location.href='listProduct.html'">
-                        Start Shopping
-                    </button>
+                    <form action="/listProduct" method="get">
+                        <button
+                                type="submit"
+                                class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-full text-lg font-semibold transition-all duration-300 transform hover:scale-110 hover:shadow-xl">
+                            Start Shopping
+                        </button>
+                    </form>
+
                 </div>
             </div>
         </div>
