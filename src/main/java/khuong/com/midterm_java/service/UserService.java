@@ -5,10 +5,7 @@ import khuong.com.midterm_java.entity.User;
 import khuong.com.midterm_java.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -78,6 +75,32 @@ public class UserService {
         Optional<User> user = userRepository.findByEmail(username);
         return user.isPresent() && user.get().getPassword().equals(password);
     }
+
+
+    public boolean validateUser(String username, String password) {
+        Optional<User> optionalUser = userRepository.findByEmail(username);
+
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            if (user.getPassword().equals(password)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public User validateGetUser(String username, String password) {
+        Optional<User> optionalUser = userRepository.findByEmail(username);
+
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            if (user.getPassword().equals(password)) {
+                return user;
+            }
+        }
+        return null;
+    }
+
 
 
 }

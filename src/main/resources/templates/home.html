@@ -31,17 +31,17 @@
                 </button>
 
 
-                    <form action="/cart" method="get">
-                        <button id="cart" type="submit" class="p-2 hover:bg-gray-100 rounded-full transition-all duration-300 hover:rotate-12">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-                            </svg>
-                        </button>
-                    </form>
+                <form action="/cart" method="get" id="cart-form" onsubmit="return checkUserSession()">
+                    <button id="cart" type="submit" class="p-2 hover:bg-gray-100 rounded-full transition-all duration-300 hover:rotate-12">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                        </svg>
+                    </button>
+                </form>
 
 
 
-                <div id="user-status" class="p-2 hover:bg-gray-100 rounded-full transition-all duration-300 ">
+                <div class="p-2 hover:bg-gray-100 rounded-full transition-all duration-300 ">
 <!--                    <div sec:authorize="isAuthenticated()">-->
 <!--                        <form action="#" th:action="@{/logout}" method="post">-->
 <!--                            <button type="submit" id="logout-btn" class="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700">-->
@@ -51,7 +51,7 @@
 <!--                        <span id="user-name" class="text-white font-semibold">Hello, <span th:text="${#authentication.name}"></span></span>-->
 <!--                    </div>-->
 
-                    <div sec:authorize="isAnonymous()">
+                    <div>
                         <form action="/login" method="get">
                             <button id="login-btn" type="submit" class="px-4 py-2 bg-transparent text-white rounded-md">
                                 Login
@@ -161,8 +161,24 @@
             </div>
         </div>
     </div>
+
+    <div id="user-status" data-user-id="${session.user.id}" class="p-2 hover:bg-gray-100 rounded-full transition-all duration-300">
+        <!-- Nội dung user -->
+    </div>
 </footer>
 <script>
+
+    function checkUserSession() {
+        // Giả sử trạng thái user được lưu trong biến data-user-id từ server
+        const userId = document.getElementById('user-status').dataset.userId;
+        if (!userId) {
+
+            alert('Vui lòng đăng nhập để tiếp tục.');
+            window.location.href = '/login';
+            return false;
+        }
+    }
+
 
 </script>
 

@@ -7,6 +7,13 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-50">
+<script th:inline="javascript">
+    /* Thymeleaf sẽ thay thế {{userId}} với giá trị thực tế từ backend */
+    var currentUserId = /*[[${userId}]]*/ 'undefined';
+    console.log("Current User ID: ", currentUserId); // Bạn có thể sử dụng currentUserId trong JavaScript
+</script>
+
+
 <header class="bg-gradient-to-r from-blue-400 to-purple-400 shadow-lg fixed w-full z-50 transition-all duration-300">
     <nav class="container mx-auto px-4 py-4">
         <div class="flex items-center justify-between">
@@ -21,16 +28,22 @@
 
             <!-- Phần trạng thái người dùng và nút Login/Logout -->
             <div class="flex items-center space-x-4">
-                                <button id="search" class="p-2 hover:bg-gray-100 rounded-full transition-all duration-300 hover:rotate-12" onclick="window.location.href='search.html'">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                                    </svg>
-                                </button>
-                                <button id="cart" class="p-2 hover:bg-gray-100 rounded-full transition-all duration-300 hover:rotate-12" onclick="window.location.href='cart.html'">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-                                    </svg>
-                                </button>
+                <button id="search" class="p-2 hover:bg-gray-100 rounded-full transition-all duration-300 hover:rotate-12" onclick="window.location.href='search.html'">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                </button>
+
+
+                <form action="/cart" method="get">
+                    <button id="cart" type="submit" class="p-2 hover:bg-gray-100 rounded-full transition-all duration-300 hover:rotate-12">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                        </svg>
+                    </button>
+                </form>
+
+
 
                 <div id="user-status" class="p-2 hover:bg-gray-100 rounded-full transition-all duration-300 ">
                     <!--                    <div sec:authorize="isAuthenticated()">-->
@@ -42,11 +55,14 @@
                     <!--                        <span id="user-name" class="text-white font-semibold">Hello, <span th:text="${#authentication.name}"></span></span>-->
                     <!--                    </div>-->
 
-                    <div sec:authorize="isAnonymous()">
-                        <button id="login-btn" class="px-4 py-2 bg-transparent text-white rounded-md " onclick="window.location.href='/login'">
-                            Login
-                        </button>
+                    <div>
+                        <form action="/login" method="get">
+                            <button id="login-btn" type="submit" class="px-4 py-2 bg-transparent text-white rounded-md">
+                                Login
+                            </button>
+                        </form>
                     </div>
+
                 </div>
             </div>
         </div>
@@ -56,7 +72,7 @@
 
 
 <div class="flex min-h-screen pt-20">
-    <aside class="w-1/4 bg-slate-50 shadow-lg p-6 space-y-4">
+    <aside class="w-1/6 bg-slate-50 shadow-lg p-6 space-y-4">
         <h2 class="text-xl font-bold text-gray-800 mb-6">Categories</h2>
         <div class="space-y-2">
             <button class="w-full text-left px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition-all duration-300" onclick="filterProducts('all')">All Products</button>
@@ -68,36 +84,46 @@
         </div>
     </aside>
 
-    <main class="w-3/4 p-6 ">
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6  ">
-            <div th:each="product : ${products}" class="bg-white rounded-xl shadow-lg overflow-hidden transition-all duration-500 transform hover:scale-105 hover:shadow-2xl"
+    <main class="w-5/6 p-6 ">
+        <div class="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 gap-8 p-6">
+            <div th:each="product : ${products}"
+                 class="bg-white rounded-xl shadow-lg overflow-hidden transition-all duration-500 transform hover:scale-105 hover:shadow-xl flex flex-col aspect-w-1 aspect-h-1"
                  th:data-category="${product.category.name}">
-                <img th:src="${product.imageProduct}" alt="Product Image" class="w-full h-48 object-cover hover:opacity-80 transition-all duration-300">
-
-                <div class="p-6">
-                    <h3 th:text="${product.name}" class="text-xl font-semibold mb-2"></h3>
-                    <p th:text="'$' + ${product.price}" class="text-gray-600 mb-2"></p>
-                    <p th:text="'$' + ${product.description}" class="text-sm text-gray-500 mb-4"></p>
-
-<!--                    <button th:id="'viewButton-'+ ${product.id}" class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-all duration-300">View Detail</button>-->
-<!--                    <button class=" w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-all duration-300">Add to Cart</button>-->
-                    <div class="flex space-x-4">
-                        <!-- View Detail Button -->
+                <!-- Product Image -->
+                <div class="relative overflow-hidden h-80">
+                    <img th:src="${product.imageProduct}"
+                         alt="Product Image"
+                         class="w-full h-full object-cover transition-all duration-300 hover:scale-110">
+                    <div class="absolute inset-0 bg-black bg-opacity-20 opacity-0 hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                         <button th:id="'viewButton-'+ ${product.id}"
-                                class="w-1/2 bg-blue-600 text-white py-2 px-6 rounded-lg shadow-md hover:bg-blue-700 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-blue-300 transition-all duration-300 flex items-center justify-center">
-                                <path d="M10 19l5-5-5-5m7 5H3"></path>
-                            </svg>
-                            View Detail
-                        </button>
-
-                        <!-- Add to Cart Button -->
-                        <button class="w-1/2 bg-green-600 text-white py-2 px-6 rounded-lg shadow-md hover:bg-green-700 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-green-300 transition-all duration-300 flex items-center justify-center">
-                                <path d="M6 2v5h12V2m0 5l-3 3M6 2h12m-3 3h-6"></path>
-                            </svg>
-                            Add to Cart
+                                class="bg-white text-gray-800 py-2 px-4 rounded-full font-semibold hover:bg-gray-100 transition-colors duration-300">
+                            View Details
                         </button>
                     </div>
+                </div>
 
+                <!-- Product Info -->
+                <div class="p-6 flex-grow flex flex-col justify-between">
+                    <div>
+                        <h3 th:text="${product.name}" class="text-xl font-bold mb-2 text-gray-800"></h3>
+                        <p th:text="'$' + ${product.price}" class="text-lg font-semibold text-indigo-600 mb-2"></p>
+<!--                        <p th:text="${#strings.abbreviate(product.description, 100)}" class="text-sm text-gray-600 mb-4"></p>-->
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="mt-4 flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2">
+                        <form action="#" method="post" th:action="@{/cartItems/upload}" class="w-full">
+                            <input type="hidden" name="product_id" th:value="${product.id}">
+                            <input type="hidden" name="quantity" value="1">
+                            <button type="submit"
+                                    class="w-full bg-indigo-500 text-white py-3 px-4 rounded-lg shadow-sm hover:bg-indigo-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50 transition-all duration-300 flex items-center justify-center group">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 group-hover:animate-bounce" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                                </svg>
+                                <span class="font-medium">Add to Cart</span>
+                            </button>
+                        </form>
+                    </div>
                 </div>
 
                 <div th:id="'ViewDetailModal-' + ${product.id}" class="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-75 transition-opacity hidden ">
@@ -112,42 +138,63 @@
                             </button>
 
                         </div>
-                        <div class="md:flex">
-                            <!-- Product Image -->
-                            <div class="md:w-1/2">
-                                <img id="productImage" th:src="${product.imageProduct}" alt="Hình ảnh sản phẩm" class="w-full h-auto object-cover">
-                            </div>
-                            <!-- Product Details -->
-                            <div class="md:w-1/2 p-6">
-                                <h1 id="productName" class="text-3xl font-bold mb-4"></h1>
-                                <p id="productId" class="text-sm text-gray-600 mb-2"></p>
-                                <p id="productCategory" class="text-sm text-gray-600 mb-4"></p>
-                                <div class="flex items-center mb-4">
-                                    <span class="text-2xl font-bold text-indigo-600" id="productPrice"></span>
-                                    <span class="ml-2 text-sm text-gray-500" th:text="${product.price} + ' VND'"></span>
+                        <div class="bg-white shadow-lg rounded-lg overflow-hidden p-6 max-w-2xl mx-auto">
+                            <div class="space-y-6">
+                                <!-- Product Name and ID -->
+                                <div class="border-b pb-4">
+                                    <h1 id="productName" class="text-3xl font-bold text-gray-800 mb-2"></h1>
+                                    <p id="productId" class="text-sm text-gray-500"></p>
                                 </div>
-                                <div class="mb-4">
-                                    <span class="font-semibold" th:text="${product.brand}" >Thương hiệu:</span>
-                                    <span id="productBrand" class="ml-2"></span>
+
+                                <!-- Price and Category -->
+                                <div class="flex justify-between items-center">
+                                    <div>
+                                        <h2 class="text-xl font-bold text-gray-800 mb-2">Giá tiền</h2>
+                                        <div class="flex items-baseline">
+                                            <span id="productPrice" class="text-4xl font-extrabold text-indigo-600 mr-2"></span>
+                                            <span class="text-lg text-gray-500" th:text="${product.price} + ' VND'"></span>
+                                        </div>
+                                    </div>
+                                    <p id="productCategory" class="text-sm font-medium px-3 py-1 bg-indigo-100 text-indigo-800 rounded-full"></p>
                                 </div>
-                                <div class="mb-4">
-                                    <span class="font-semibold" th:text="${product.color}" >Màu sắc:</span>
-                                    <span id="productColor" class="ml-2"></span>
+
+                                <!-- Product Details -->
+                                <div class="flex flex-col gap-4 text-sm max-h-64 overflow-y-auto">
+                                    <div class="flex items-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                                            <path fill-rule="evenodd" d="M5 5a3 3 0 015-2.236A3 3 0 0114.83 6H16a2 2 0 110 4h-5V9a1 1 0 10-2 0v1H4a2 2 0 110-4h1.17C5.06 5.687 5 5.35 5 5zm4 1V5a1 1 0 10-1 1h1zm3 0a1 1 0 10-1-1v1h1z" clip-rule="evenodd" />
+                                            <path d="M9 11H3v5a2 2 0 002 2h4v-7zM11 18h4a2 2 0 002-2v-5h-6v7z" />
+                                        </svg>
+                                        <span class="font-semibold mr-2">Thương hiệu:</span>
+                                        <span id="productBrand" th:text="${product.brand}"></span>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                                            <path fill-rule="evenodd" d="M4 2a2 2 0 00-2 2v11a3 3 0 106 0V4a2 2 0 00-2-2H4zm1 14a1 1 0 100-2 1 1 0 000 2zm5-1.757l4.9-4.9a2 2 0 000-2.828L13.485 5.1a2 2 0 00-2.828 0L10 5.757v8.486zM16 18H9.071l6-6H16a2 2 0 012 2v2a2 2 0 01-2 2z" clip-rule="evenodd" />
+                                        </svg>
+                                        <span class="font-semibold mr-2">Màu sắc:</span>
+                                        <span id="productColor" th:text="${product.color}"></span>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                                            <path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1.323l3.954 1.582 1.599-.8a1 1 0 01.894 1.79l-1.233.616 1.738 5.42a1 1 0 01-.285 1.05A3.989 3.989 0 0115 15a3.989 3.989 0 01-2.667-1.019 1 1 0 01-.285-1.05l1.715-5.349L11 6.477V16h2a1 1 0 110 2H7a1 1 0 110-2h2V6.477L6.237 7.582l1.715 5.349a1 1 0 01-.285 1.05A3.989 3.989 0 015 15a3.989 3.989 0 01-2.667-1.019 1 1 0 01-.285-1.05l1.738-5.42-1.233-.617a1 1 0 01.894-1.788l1.599.799L9 4.323V3a1 1 0 011-1zm-5 8.274l-.818 2.552c.25.112.526.174.818.174.292 0 .569-.062.818-.174L5 10.274zm10 0l-.818 2.552c.25.112.526.174.818.174.292 0 .569-.062.818-.174L15 10.274z" clip-rule="evenodd" />
+                                        </svg>
+                                        <span class="font-semibold mr-2">Trọng lượng:</span>
+                                        <span id="productWeight" th:text="${product.weight}"></span>
+                                        <span class="ml-1">kg</span>
+                                    </div>
                                 </div>
-                                <div class="mb-4">
-                                    <span class="font-semibold" th:text="${product.weight}" >Trọng lượng:</span>
-                                    <span id="productWeight" class="ml-2"></span>
-                                    <span class="ml-1">kg</span>
-                                </div>
-                                <div class="mb-6">
-                                    <h2 class="font-semibold mb-2" th:text="${product.description}" >Mô tả sản phẩm:</h2>
-                                    <p id="productDescription" class="text-gray-700"></p>
+
+                                <!-- Product Description -->
+                                <div class="mt-6 max-h-50 overflow-y-auto">
+                                    <h2 class="text-xl font-semibold text-gray-800 mb-2">Mô tả sản phẩm</h2>
+                                    <p id="productDescription" class="text-gray-600 leading-relaxed" th:text="${product.description}"></p>
                                 </div>
                             </div>
                         </div>
+
                     </div>
                 </div>
-
             </div>
 
         </div>
@@ -241,6 +288,8 @@
             }, 300);
         });
     });
+
+
 
 
 

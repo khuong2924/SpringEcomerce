@@ -1,7 +1,11 @@
 package khuong.com.midterm_java.repository;
 
+import khuong.com.midterm_java.entity.Cart;
 import khuong.com.midterm_java.entity.CartItem;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
+
 public interface CartItemRepository extends JpaRepository<CartItem, Long> {
+    List<CartItem> findByCart(Cart cart);
 }

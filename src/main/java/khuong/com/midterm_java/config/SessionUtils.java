@@ -1,7 +1,6 @@
 package khuong.com.midterm_java.config;
 
 import jakarta.servlet.http.HttpSession;
-
 import khuong.com.midterm_java.entity.User;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestAttributes;

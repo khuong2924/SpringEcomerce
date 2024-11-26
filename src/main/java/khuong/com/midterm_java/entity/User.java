@@ -1,13 +1,10 @@
 package khuong.com.midterm_java.entity;
 
 import java.util.ArrayList;
-import java.util.Collection;
+
 import java.util.List;
 
 import lombok.*;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -29,7 +26,7 @@ import jakarta.validation.constraints.NotEmpty;
 @AllArgsConstructor
 @Table(name = "users")
 @NoArgsConstructor
-public class User implements UserDetails {
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -62,25 +59,9 @@ public class User implements UserDetails {
     )
     private List<Role> roles = new ArrayList<>();
 
-    // UserDetails interface methods
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        List<GrantedAuthority> authorityList = new ArrayList<>();
-
-        roles.forEach(role -> {
-            authorityList.add(new SimpleGrantedAuthority(role.getName()));
-        });
-
-        return authorityList;
-    }
-
-    @Override
     public String getUsername() {
-        return email;
+        return this.email;
     }
 
-    @Override
-    public String getPassword() {
-        return password;
-    }
+    // UserDetails interface methods
 }

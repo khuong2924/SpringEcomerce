@@ -1,6 +1,5 @@
 package khuong.com.midterm_java.controller;
 
-import khuong.com.midterm_java.config.GlobalData;
 import khuong.com.midterm_java.dto.CartDTO;
 import khuong.com.midterm_java.dto.CartItemDTO;
 import khuong.com.midterm_java.dto.ResponseDTO;
