@@ -52,21 +52,23 @@ public class CartItemController {
                 .build();
     }
 
-//    @DeleteMapping("{id}")
-//    public ResponseDTO<Void> deleteCartItem(@PathVariable("id") Long id) {
-//        cartItemService.delete(id);
-//        return ResponseDTO.<Void>builder()
-//                .status(201)
-//                .message("Xóa thành công cart item")
-//                .build();
-//    }
+    @DeleteMapping("{id}")
+    public ResponseDTO<Void> deleteCartItemOK(@PathVariable("id") Long id) {
+        cartItemService.delete(id);
+        return ResponseDTO.<Void>builder()
+                .status(201)
+                .message("Xóa thành công cart item")
+                .build();
+    }
 
-//
+
+
+
+
 @PostMapping("/delete")
 public ResponseEntity<Void> deleteCartItem(@RequestParam("cartItemId") Long cartItemId) {
     // Xử lý xóa cartItem
     cartItemService.delete(cartItemId);
-
     // Trả về HTTP redirect
     HttpHeaders headers = new HttpHeaders();
     headers.add("Location", "/cart"); // Chuyển hướng đến /cart sau khi xóa thành công

@@ -1,12 +1,15 @@
 package khuong.com.midterm_java.service;
 
 import khuong.com.midterm_java.dto.UserDTO;
+import khuong.com.midterm_java.entity.Cart;
 import khuong.com.midterm_java.entity.User;
+import khuong.com.midterm_java.repository.CartRepository;
 import khuong.com.midterm_java.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +21,8 @@ public class UserService {
 
     @Autowired
     private final UserRepository userRepository;
+    @Autowired
+    private final CartRepository cartRepository;
 
 
 
@@ -99,6 +104,18 @@ public class UserService {
             }
         }
         return null;
+    }
+
+
+    @Transactional
+    public User createUser(User user) {
+        User savedUser = userRepository.save(user);
+
+        // Tạo profile rỗng tương ứng với user
+        Cart cart = new Cart();
+        cart.setUser(user);
+        cartRepository.save(cart);
+        return savedUser;
     }
 
 

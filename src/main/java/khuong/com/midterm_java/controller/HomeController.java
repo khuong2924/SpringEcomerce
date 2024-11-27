@@ -37,6 +37,11 @@ public class HomeController {
         return "home";
     }
 
+    @GetMapping("/signup")
+    public String signup() {
+        return "signup";
+    }
+
     @GetMapping("/home")
     public String returnHome(Model model) {
         Long userId = SessionUtils.getCurrentUserId();
