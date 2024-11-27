@@ -67,7 +67,7 @@ public class HomeController {
         Long userId = SessionUtils.getCurrentUserId();
         if (userId == null) {
             model.addAttribute("error", "Bạn cần đăng nhập để truy cập giỏ hàng.");
-            return "login";
+            return "error";
         }
         else {
 

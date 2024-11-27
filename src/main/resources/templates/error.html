@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thông báo lỗi</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fadeIn {
+            animation: fadeIn 0.5s ease-out;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+
+<header class="bg-gradient-to-r from-blue-400 to-purple-400 shadow-lg fixed w-full z-50 transition-all duration-300">
+    <nav class="container mx-auto px-4 py-4">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center space-x-8">
+                <img src="https://res.cloudinary.com/dhp7ylyvh/image/upload/v1732713934/eddu13uacm4ghp4lwrvc.png" alt="TechGear Logo" class="h-16 w-auto hover:rotate-12 transition-all duration-300">
+                <div class="hidden md:flex space-x-6">
+                    <a href="/home" class="text-gray-800 font-semibold text-lg hover:text-blue-600 transition-all duration-300 hover:scale-110">Home</a>
+                    <a href="/listProduct" class="text-gray-800 font-semibold text-lg hover:text-blue-600 transition-all duration-300 hover:scale-110">Products</a>
+                    <a id = "contact-link" class="text-gray-800 font-semibold text-lg hover:text-blue-600 transition-all duration-300 hover:scale-110">Contact</a>
+                </div>
+            </div>
+
+            <!-- Phần trạng thái người dùng và nút Login/Logout -->
+            <div class="flex items-center space-x-4">
+
+                <form action="/ship" method="get" id="shipping">
+                    <button id="search" class="p-4 hover:bg-gray-100 rounded-full transition-all duration-300 hover:rotate-12">
+                        <i class="fa-sharp fa-solid fa-truck-fast text-2xl"></i>
+                    </button>
+                </form>
+
+                <form action="/cart" method="get" id="cart-form" onsubmit="return checkUserSession()">
+                    <button id="cart" type="submit" class="p-4 hover:bg-gray-100 rounded-full transition-all duration-300 hover:rotate-12">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                        </svg>
+                    </button>
+                </form>
+
+
+
+
+                <div class="p-2 hover:bg-gray-100 rounded-full transition-all duration-300 ">
+                    <!--                    <div sec:authorize="isAuthenticated()">-->
+                    <!--                        <form action="#" th:action="@{/logout}" method="post">-->
+                    <!--                            <button type="submit" id="logout-btn" class="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700">-->
+                    <!--                                Logout-->
+                    <!--                            </button>-->
+                    <!--                        </form>-->
+                    <!--                        <span id="user-name" class="text-white font-semibold">Hello, <span th:text="${#authentication.name}"></span></span>-->
+                    <!--                    </div>-->
+
+                    <div>
+                        <form action="/login" method="get">
+                            <button id="login-btn" type="submit" class="px-4 py-2 bg-transparent text-white rounded-md">
+                                Login
+                            </button>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </nav>
+</header>
+
+
+
+<div class="bg-gradient-to-br from-blue-200 to-purple-200 min-h-screen flex items-center justify-center p-4">
+<div id="errorMessage" class="bg-gray-800 bg-opacity-90 backdrop-blur-lg p-8 rounded-xl shadow-2xl max-w-md w-full animate-fadeIn">
+    <div class="flex items-center justify-between mb-6">
+        <div class="flex items-center">
+            <svg class="h-8 w-8 text-red-500 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+            </svg>
+            <h2 class="text-2xl font-bold text-white">Lỗi Đăng Nhập</h2>
+        </div>
+        <button onclick="closeError()" class="text-white hover:text-gray-400 transition duration-300">
+            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+        </button>
+    </div>
+    <p class="text-gray-300 text-lg mb-6">
+        Bạn cần đăng nhập để có thể truy cập tới giỏ hàng.
+    </p>
+    <div class="mt-8">
+
+        <form action="/login" method="get">
+            <button type="submit" class="w-full bg-red-600 text-white py-3 px-4 rounded-lg font-semibold hover:bg-red-700 transition duration-300 transform hover:scale-105">
+                Đăng nhập ngay
+            </button>
+        </form>
+    </div>
+</div>
+    </div>
+</body>
+
+<script>
+    function closeError() {
+        const errorMessage = document.getElementById('errorMessage');
+        errorMessage.classList.add('opacity-0', 'transform', 'translate-y-4');
+        errorMessage.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+        setTimeout(() => {
+            errorMessage.style.display = 'none';
+        }, 500);
+    }
+</script>
+</html>
