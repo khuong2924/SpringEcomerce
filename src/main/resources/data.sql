@@ -1,5 +1,7 @@
 use midtermjava;
 
+INSERT INTO user VALUES ('admin@gmail.com', 'My', 'Admin', 123)
+
 INSERT INTO category(name) VALUES
                                ('Laptops'),
                                ('Smartphones'),

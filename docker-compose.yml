@@ -1,0 +1,34 @@
+services:
+  springboot-app:
+    image: midterm-java-app
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/MidtermJava
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=123456
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+    depends_on:
+      - mysql
+    networks:
+      - mynetwork
+
+  mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_DATABASE: MidtermJava
+    ports:
+      - "3306:3306"
+    networks:
+      - mynetwork
+    volumes:
+      - mysql-data:/var/lib/mysql  # Dùng volume để lưu trữ dữ liệu MySQL
+
+volumes:
+  mysql-data:  # Định nghĩa volume mysql-data
+
+networks:
+  mynetwork:
+    driver: bridge
