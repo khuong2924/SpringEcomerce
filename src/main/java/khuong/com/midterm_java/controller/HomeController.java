@@ -38,8 +38,16 @@ public class HomeController {
     }
 
     @GetMapping("/home")
-    public String returnHome() {
+    public String returnHome(Model model) {
+        Long userId = SessionUtils.getCurrentUserId();
+        model.addAttribute("user", SessionUtils.getCurrentUser());
+        model.addAttribute("userId", userId);
         return "home";
+    }
+
+    @GetMapping("/ship")
+    public String returnShipping() {
+        return "ship";
     }
 
     @GetMapping("/login")
@@ -52,11 +60,40 @@ public class HomeController {
     @GetMapping("/cart")
     public String returnCart(Model model) {
         Long userId = SessionUtils.getCurrentUserId();
-        Cart cart = cartRepository.findByUserId(userId);
-        model.addAttribute("cart", cart);
-        List<CartItem> cartItemList = cartItemRepository.findByCart(cart);
-        model.addAttribute("cartItemList", cartItemList);
-        return "cart";
+        if (userId == null) {
+            model.addAttribute("error", "Bạn cần đăng nhập để truy cập giỏ hàng.");
+            return "login";
+        }
+        else {
+
+
+            Cart cart = cartRepository.findByUserId(userId);
+            model.addAttribute("cart", cart);
+            List<CartItem> cartItemList = cartItemRepository.findByCart(cart);
+            model.addAttribute("cartItemList", cartItemList);
+
+            // Tính toán tổng giá trị
+            double subtotal = cartItemList.stream()
+                    .mapToDouble(item -> item.getProduct().getPrice() * item.getQuantity())
+                    .sum();
+            double tax = subtotal * 0.08; // Thuế 8%
+            double shipping = subtotal > 50 ? 0 : 5.99;
+            double total = subtotal + tax + shipping;
+
+            subtotal = Math.floor(subtotal); // Làm tròn xuống và lấy phần nguyên
+            tax = Math.floor(tax);           // Làm tròn xuống và lấy phần nguyên
+            shipping = Math.floor(shipping); // Làm tròn xuống và lấy phần nguyên
+            total = Math.floor(total);
+
+            // Gắn các giá trị vào model
+            model.addAttribute("subtotal", subtotal);
+            model.addAttribute("tax", tax);
+            model.addAttribute("shipping", shipping);
+            model.addAttribute("total", total);
+
+
+            return "cart";
+        }
     }
 
     @GetMapping("/cartItems/cart")

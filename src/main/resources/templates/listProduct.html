@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TechGear Hub - Shipping Interface</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 </head>
 <body class="bg-gray-50">
 <script th:inline="javascript">
@@ -18,26 +20,26 @@
     <nav class="container mx-auto px-4 py-4">
         <div class="flex items-center justify-between">
             <div class="flex items-center space-x-8">
-                <img src="https://res.cloudinary.com/dhp7ylyvh/image/upload/v1732268080/z91of98oxvini0h09gfq.png" alt="TechGear Logo" class="h-8 w-auto hover:rotate-12 transition-all duration-300">
+                <img src="https://res.cloudinary.com/dhp7ylyvh/image/upload/v1732713934/eddu13uacm4ghp4lwrvc.png" alt="TechGear Logo" class="h-16 w-auto hover:rotate-12 transition-all duration-300">
                 <div class="hidden md:flex space-x-6">
                     <a href="/home" class="text-gray-800 font-semibold text-lg hover:text-blue-600 transition-all duration-300 hover:scale-110">Home</a>
                     <a href="/listProduct" class="text-gray-800 font-semibold text-lg hover:text-blue-600 transition-all duration-300 hover:scale-110">Products</a>
-                    <a href="contact.html" class="text-gray-800 font-semibold text-lg hover:text-blue-600 transition-all duration-300 hover:scale-110">Contact</a>
+                    <a id = "contact-link" class="text-gray-800 font-semibold text-lg hover:text-blue-600 transition-all duration-300 hover:scale-110">Contact</a>
                 </div>
             </div>
 
             <!-- Phần trạng thái người dùng và nút Login/Logout -->
             <div class="flex items-center space-x-4">
-                <button id="search" class="p-2 hover:bg-gray-100 rounded-full transition-all duration-300 hover:rotate-12" onclick="window.location.href='search.html'">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                    </svg>
-                </button>
 
+                <form action="/ship" method="get" id="shipping">
+                    <button id="search" class="p-4 hover:bg-gray-100 rounded-full transition-all duration-300 hover:rotate-12">
+                        <i class="fa-sharp fa-solid fa-truck-fast text-2xl"></i>
+                    </button>
+                </form>
 
-                <form action="/cart" method="get">
-                    <button id="cart" type="submit" class="p-2 hover:bg-gray-100 rounded-full transition-all duration-300 hover:rotate-12">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <form action="/cart" method="get" id="cart-form" onsubmit="return checkUserSession()">
+                    <button id="cart" type="submit" class="p-4 hover:bg-gray-100 rounded-full transition-all duration-300 hover:rotate-12">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
                         </svg>
                     </button>
@@ -45,7 +47,8 @@
 
 
 
-                <div id="user-status" class="p-2 hover:bg-gray-100 rounded-full transition-all duration-300 ">
+
+                <div class="p-2 hover:bg-gray-100 rounded-full transition-all duration-300 ">
                     <!--                    <div sec:authorize="isAuthenticated()">-->
                     <!--                        <form action="#" th:action="@{/logout}" method="post">-->
                     <!--                            <button type="submit" id="logout-btn" class="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700">-->
@@ -68,7 +71,6 @@
         </div>
     </nav>
 </header>
-
 
 
 <div class="flex min-h-screen pt-20">
@@ -147,14 +149,14 @@
                                 </div>
 
                                 <!-- Price and Category -->
-                                <div class="flex justify-between items-center">
-                                    <div>
-                                        <h2 class="text-xl font-bold text-gray-800 mb-2">Giá tiền</h2>
-                                        <div class="flex items-baseline">
-                                            <span id="productPrice" class="text-4xl font-extrabold text-indigo-600 mr-2"></span>
-                                            <span class="text-lg text-gray-500" th:text="${product.price} + ' VND'"></span>
-                                        </div>
-                                    </div>
+                                <div class="">
+<!--                                    <div>-->
+<!--                                        <h2 class="text-xl font-bold text-gray-800 mb-2">Giá tiền</h2>-->
+<!--                                        <div class="flex items-baseline">-->
+<!--                                            <span id="productPrice" class="text-4xl font-extrabold text-indigo-600 mr-2"></span>-->
+<!--                                            <span class="text-lg text-gray-500" th:text="${product.price} + ' VND'"></span>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
                                     <p id="productCategory" class="text-sm font-medium px-3 py-1 bg-indigo-100 text-indigo-800 rounded-full"></p>
                                 </div>
 
@@ -187,7 +189,7 @@
 
                                 <!-- Product Description -->
                                 <div class="mt-6 max-h-50 overflow-y-auto">
-                                    <h2 class="text-xl font-semibold text-gray-800 mb-2">Mô tả sản phẩm</h2>
+                                    <h6 class="text-xl font-semibold text-gray-800 mb-2">Mô tả sản phẩm</h6>
                                     <p id="productDescription" class="text-gray-600 leading-relaxed" th:text="${product.description}"></p>
                                 </div>
                             </div>

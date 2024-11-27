@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trạng thái đơn hàng</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+</head>
+
+
+<body class="bg-gray-50">
+
+<header class="bg-gradient-to-r from-blue-400 to-purple-400 shadow-lg fixed w-full z-50 transition-all duration-300">
+    <nav class="container mx-auto px-4 py-4">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center space-x-8">
+                <img src="https://res.cloudinary.com/dhp7ylyvh/image/upload/v1732713934/eddu13uacm4ghp4lwrvc.png" alt="TechGear Logo" class="h-16 w-auto hover:rotate-12 transition-all duration-300">
+                <div class="hidden md:flex space-x-6">
+                    <a href="/home" class="text-gray-800 font-semibold text-lg hover:text-blue-600 transition-all duration-300 hover:scale-110">Home</a>
+                    <a href="/listProduct" class="text-gray-800 font-semibold text-lg hover:text-blue-600 transition-all duration-300 hover:scale-110">Products</a>
+                    <a id = "contact-link" class="text-gray-800 font-semibold text-lg hover:text-blue-600 transition-all duration-300 hover:scale-110">Contact</a>
+                </div>
+            </div>
+
+            <!-- Phần trạng thái người dùng và nút Login/Logout -->
+            <div class="flex items-center space-x-4">
+
+                <form action="/ship" method="get" id="shipping">
+                    <button id="search" class="p-4 hover:bg-gray-100 rounded-full transition-all duration-300 hover:rotate-12">
+                        <i class="fa-sharp fa-solid fa-truck-fast text-2xl"></i>
+                    </button>
+                </form>
+
+                <form action="/cart" method="get" id="cart-form" onsubmit="return checkUserSession()">
+                    <button id="cart" type="submit" class="p-4 hover:bg-gray-100 rounded-full transition-all duration-300 hover:rotate-12">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                        </svg>
+                    </button>
+                </form>
+
+
+
+
+                <div class="p-2 hover:bg-gray-100 rounded-full transition-all duration-300 ">
+                    <!--                    <div sec:authorize="isAuthenticated()">-->
+                    <!--                        <form action="#" th:action="@{/logout}" method="post">-->
+                    <!--                            <button type="submit" id="logout-btn" class="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700">-->
+                    <!--                                Logout-->
+                    <!--                            </button>-->
+                    <!--                        </form>-->
+                    <!--                        <span id="user-name" class="text-white font-semibold">Hello, <span th:text="${#authentication.name}"></span></span>-->
+                    <!--                    </div>-->
+
+                    <div>
+                        <form action="/login" method="get">
+                            <button id="login-btn" type="submit" class="px-4 py-2 bg-transparent text-white rounded-md">
+                                Login
+                            </button>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </nav>
+</header>
+
+
+
+<div class="min-h-screen bg-gray-100 flex flex-col items-center justify-center p-4">
+<div class="bg-white rounded-lg shadow-md p-6 w-full max-w-2xl mb-8">
+    <h1 class="text-2xl font-bold text-center mb-6">Trạng thái đơn hàng #<span id="currentOrderId">12345</span></h1>
+
+    <div class="flex flex-col md:flex-row justify-between items-center space-y-8 md:space-y-0 md:space-x-4">
+        <div id="step1" class="flex flex-col items-center text-green-500">
+            <div class="relative">
+                <i class="fas fa-box text-4xl"></i>
+                <div class="absolute top-0 left-0 w-full h-full animate-ping bg-green-500 rounded-full opacity-75"></div>
+            </div>
+            <p class="mt-2 text-sm font-medium text-center">Chờ lấy hàng</p>
+        </div>
+
+        <div class="hidden md:block w-full h-1 bg-gray-300" id="line1"></div>
+
+        <div id="step2" class="flex flex-col items-center text-gray-400">
+            <div class="relative">
+                <i class="fas fa-truck text-4xl"></i>
+                <div class="absolute top-0 left-0 w-full h-full animate-ping bg-green-500 rounded-full opacity-75 hidden"></div>
+            </div>
+            <p class="mt-2 text-sm font-medium text-center">Chờ giao hàng</p>
+        </div>
+
+        <div class="hidden md:block w-full h-1 bg-gray-300" id="line2"></div>
+
+        <div id="step3" class="flex flex-col items-center text-gray-400">
+            <div class="relative">
+                <i class="fas fa-star text-4xl"></i>
+                <div class="absolute top-0 left-0 w-full h-full animate-ping bg-green-500 rounded-full opacity-75 hidden"></div>
+            </div>
+            <p class="mt-2 text-sm font-medium text-center">Đánh giá</p>
+        </div>
+    </div>
+</div>
+
+<div class="bg-white rounded-lg shadow-md p-6 w-full max-w-2xl">
+    <h2 class="text-xl font-bold mb-4">Danh sách đơn hàng</h2>
+    <div id="orderList" class="space-y-4">
+        <div class="flex justify-between items-center border-b pb-2">
+            <div>
+                <span class="font-semibold">Đơn hàng #12347</span>
+                <p class="text-sm text-gray-600">Mũ lưỡi trai, Kính râm</p>
+            </div>
+            <div class="flex space-x-2">
+                <button onclick="viewOrder(12346)" class="view-btn bg-gradient-to-r from-blue-400 to-blue-600 text-white px-4 py-2 rounded-full text-sm transition duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
+                    <i class="fas fa-eye mr-2"></i>Xem
+                </button>
+                <button onclick="cancelOrder(12346)" class="cancel-btn bg-gradient-to-r from-red-400 to-red-600 text-white px-4 py-2 rounded-full text-sm transition duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50">
+                    <i class="fas fa-times mr-2"></i>Hủy
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</body>
+
+<script>
+    const orders = [
+        { id: 12345, status: 0, items: "Áo thun, Quần jeans" },
+        { id: 12346, status: 1, items: "Giày thể thao, Tất" },
+        { id: 12347, status: 2, items: "Mũ lưỡi trai, Kính râm" },
+    ];
+
+    function updateOrderStatus(orderId, status) {
+        const steps = [
+            document.getElementById('step1'),
+            document.getElementById('step2'),
+            document.getElementById('step3')
+        ];
+        const lines = [
+            document.getElementById('line1'),
+            document.getElementById('line2')
+        ];
+
+        document.getElementById('currentOrderId').textContent = orderId;
+
+        steps.forEach((step, index) => {
+            if (index <= status) {
+                step.classList.remove('text-gray-400');
+                step.classList.add('text-green-500');
+                step.querySelector('.animate-ping').classList.remove('hidden');
+            } else {
+                step.classList.remove('text-green-500');
+                step.classList.add('text-gray-400');
+                step.querySelector('.animate-ping').classList.add('hidden');
+            }
+        });
+
+        lines.forEach((line, index) => {
+            if (index < status) {
+                line.classList.remove('bg-gray-300');
+                line.classList.add('bg-green-500');
+            } else {
+                line.classList.remove('bg-green-500');
+                line.classList.add('bg-gray-300');
+            }
+        });
+    }
+
+    function viewOrder(orderId) {
+        const order = orders.find(o => o.id === orderId);
+        if (order) {
+            updateOrderStatus(orderId, order.status);
+        }
+    }
+
+    function cancelOrder(orderId) {
+        const orderElement = Array.from(document.querySelectorAll("#orderList div"))
+            .find(div => div.querySelector("span").textContent.includes(`Đơn hàng #${orderId}`));
+
+        if (orderElement) {
+            orderElement.remove();
+            const orderIndex = orders.findIndex(o => o.id === orderId);
+            if (orderIndex !== -1) {
+                orders.splice(orderIndex, 1);
+            }
+        }
+    }
+
+
+    // Set initial status
+    updateOrderStatus(orders[0].id, orders[0].status);
+
+</script>
+</div>
+</html>
