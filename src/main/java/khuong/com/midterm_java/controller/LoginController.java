@@ -28,7 +28,6 @@ public class LoginController {
 //      return "login";
 //    }
 //  }
-
   @PostMapping("/login")
   public String handleLogin(@RequestParam String username, @RequestParam String password, Model model, HttpServletRequest request) {
     // Kiểm tra tài khoản và mật khẩu
